@@ -13,10 +13,10 @@ namespace Stud
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class studEntities : DbContext
+    public partial class studEntities1 : DbContext
     {
-        public studEntities()
-            : base("name=studEntities")
+        public studEntities1()
+            : base("name=studEntities1")
         {
         }
     

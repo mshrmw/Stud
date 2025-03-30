@@ -128,7 +128,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="studEntities" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="studEntities1" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Students" EntityType="Self.Students" />
           <EntitySet Name="Users" EntityType="Self.Users" />
           <AssociationSet Name="FK__Users__IDStudent__4F7CD00D" Association="Self.FK__Users__IDStudent__4F7CD00D">
@@ -145,7 +145,7 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="Хранилище studModelContainer" CdmEntityContainer="studEntities">
+        <EntityContainerMapping StorageEntityContainer="Хранилище studModelContainer" CdmEntityContainer="studEntities1">
           <EntitySetMapping Name="Students">
             <EntityTypeMapping TypeName="studModel.Students">
               <MappingFragment StoreEntitySet="Students">

@@ -13,12 +13,12 @@
         </Grid.RowDefinitions>
         <Rectangle HorizontalAlignment="Center" Height="135" Grid.Row="0" Fill="#CDDEFF" VerticalAlignment="Top" Width="1000"/>
         <Frame x:Name="mainFrame" Grid.Row="1"/>
-        <Button x:Name="Profil" Content="Профиль" Style="{DynamicResource ShapkaButton}" FontSize="20" HorizontalAlignment="Left" Margin="40,20,0,0" VerticalAlignment="Top" Height="40" Width="150" Click="Profil_Click"/>
-        <Button x:Name="Sectors" Content="Сектор" Style="{DynamicResource ShapkaButton}" FontSize="20" HorizontalAlignment="Left" Margin="40,74,0,0" VerticalAlignment="Top" Height="40" Width="150" Click="Sectors_Click"/>
-        <Button x:Name="Registration" Content="Регистрация" Style="{DynamicResource ShapkaButton}" FontSize="20" HorizontalAlignment="Left" Margin="220,74,0,0" VerticalAlignment="Top" Height="40" Width="150" Click="Registration_Click"/>
-        <Button x:Name="Events" Content="Мероприятия" Style="{DynamicResource ShapkaButton}" FontSize="20" HorizontalAlignment="Left" Margin="220,20,0,0" VerticalAlignment="Top" Height="40" Width="150" Click="Events_Click" />
-        <Button x:Name="Tasks" Content="Задания" Style="{DynamicResource ShapkaButton}" FontSize="20" HorizontalAlignment="Left" Margin="400,20,0,0" VerticalAlignment="Top" Height="40" Width="150" Click="Tasks_Click" />
-        <Button x:Name="Tops" Content="Рейтинг" Style="{DynamicResource ShapkaButton}" FontSize="20" HorizontalAlignment="Left" Margin="400,74,0,0" VerticalAlignment="Top" Height="40" Width="150" Click="Tops_Click"/>
-        <Button x:Name="Exit" Content="Выйти" Style="{DynamicResource ShapkaButton}" FontSize="20" HorizontalAlignment="Right" Margin="0,20,40,0" VerticalAlignment="Top" Height="40" Width="150" Click="Exit_Click" />
+        <Button x:Name="Profil" Content="Профиль" Style="{DynamicResource ShapkaButton}" FontSize="20" HorizontalAlignment="Left" Margin="40,20,0,0" VerticalAlignment="Top" Height="40" Width="150" />
+        <Button x:Name="Sectors" Content="Сектор" Style="{DynamicResource ShapkaButton}" FontSize="20" HorizontalAlignment="Left" Margin="40,74,0,0" VerticalAlignment="Top" Height="40" Width="150" />
+        <Button x:Name="Registration" Content="Регистрация" Style="{DynamicResource ShapkaButton}" FontSize="20" HorizontalAlignment="Left" Margin="220,74,0,0" VerticalAlignment="Top" Height="40" Width="150" />
+        <Button x:Name="Events" Content="Мероприятия" Style="{DynamicResource ShapkaButton}" FontSize="20" HorizontalAlignment="Left" Margin="220,20,0,0" VerticalAlignment="Top" Height="40" Width="150"  />
+        <Button x:Name="Tasks" Content="Задания" Style="{DynamicResource ShapkaButton}" FontSize="20" HorizontalAlignment="Left" Margin="400,20,0,0" VerticalAlignment="Top" Height="40" Width="150" />
+        <Button x:Name="Tops" Content="Рейтинг" Style="{DynamicResource ShapkaButton}" FontSize="20" HorizontalAlignment="Left" Margin="400,74,0,0" VerticalAlignment="Top" Height="40" Width="150" />
+        <Button x:Name="Exit" Content="Выйти" Style="{DynamicResource ShapkaButton}" FontSize="20" HorizontalAlignment="Right" Margin="0,20,40,0" VerticalAlignment="Top" Height="40" Width="150"  />
     </Grid>
 </Window>

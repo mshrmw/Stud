@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity.Core.Objects.DataClasses;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -47,7 +48,7 @@ namespace Stud
                 return;
             }
 
-            using (var db = new studEntities())
+            using (var db = new studEntities1())
             {
                 var user = db.Users.AsNoTracking().FirstOrDefault(u => u.Login == log && u.Password == pass);
 
@@ -56,10 +57,25 @@ namespace Stud
                     MessageBox.Show("Пользлователь с такими данными не найден!");
                     return;
                 }
-                else
+                if (user.Role == "student")
                 {
+                    MessageBox.Show("Успешный вход в систему!");
                     StudentsWindow studentsWindow = new StudentsWindow();
                     studentsWindow.Show();
+                    this.Close();
+                }
+                else if (user.Role == "coordinator")
+                {
+                    MessageBox.Show("Успешный вход в систему!");
+                    CoordinatorWindow coordinatorWindow = new CoordinatorWindow();
+                    coordinatorWindow.Show();
+                    this.Close();
+                }
+                else if (user.Role == "admin")
+                {
+                    MessageBox.Show("Успешный вход в систему!");
+                    CoordinatorWindow coordinatorWindow = new CoordinatorWindow();
+                    coordinatorWindow.Show();
                     this.Close();
                 }
             }
