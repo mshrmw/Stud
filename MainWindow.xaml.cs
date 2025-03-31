@@ -40,12 +40,15 @@ namespace Stud
         }
         private void ButtonWelcome(object sender, RoutedEventArgs e)
         {
-            string log = login.Text;
-            string pass = password.Password;
+            Auth(login.Text, password.Password);
+        }
+
+        public bool Auth(String log, String pass)
+        {
             if (string.IsNullOrEmpty(log) || string.IsNullOrEmpty(pass))
             {
                 MessageBox.Show("Введите логин и пароль");
-                return;
+                return false;
             }
 
             using (var db = new studEntities1())
@@ -55,31 +58,29 @@ namespace Stud
                 if (user == null)
                 {
                     MessageBox.Show("Пользлователь с такими данными не найден!");
-                    return;
+                    return false;
                 }
                 if (user.Role == "student")
                 {
                     MessageBox.Show("Успешный вход в систему!");
                     StudentsWindow studentsWindow = new StudentsWindow();
                     studentsWindow.Show();
-                    this.Close();
                 }
                 else if (user.Role == "coordinator")
                 {
                     MessageBox.Show("Успешный вход в систему!");
                     CoordinatorWindow coordinatorWindow = new CoordinatorWindow();
                     coordinatorWindow.Show();
-                    this.Close();
                 }
                 else if (user.Role == "admin")
                 {
                     MessageBox.Show("Успешный вход в систему!");
                     CoordinatorWindow coordinatorWindow = new CoordinatorWindow();
                     coordinatorWindow.Show();
-                    this.Close();
                 }
+                this.Close();
+                return true;
             }
-           
         }
     }
 }
