@@ -45,19 +45,28 @@ namespace Stud
 
         public bool Auth(String log, String pass)
         {
-            if (string.IsNullOrEmpty(log) || string.IsNullOrEmpty(pass))
+            if (string.IsNullOrEmpty(log) && string.IsNullOrEmpty(pass))
             {
                 MessageBox.Show("Введите логин и пароль");
                 return false;
             }
-
+            if (string.IsNullOrEmpty(log))
+            {
+                MessageBox.Show("Введите логин");
+                return false;
+            }
+            if (string.IsNullOrEmpty(pass))
+            {
+                MessageBox.Show("Введите пароль");
+                return false;
+            }
             using (var db = new studEntities1())
             {
                 var user = db.Users.AsNoTracking().FirstOrDefault(u => u.Login == log && u.Password == pass);
 
                 if (user == null)
                 {
-                    MessageBox.Show("Пользлователь с такими данными не найден!");
+                    MessageBox.Show("Пользователь с такими данными не найден");
                     return false;
                 }
                 if (user.Role == "student")

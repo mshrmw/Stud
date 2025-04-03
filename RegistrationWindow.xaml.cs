@@ -42,115 +42,131 @@ namespace Stud
                 return false;
             }
         }
-        private bool IsValidStudentCardNumber(string number)
-        {
-            return number.All(char.IsDigit);
-        }
         private bool IsRussianLetter(char c)
         {
             return (c >= 'а' && c <= 'я') || (c >= 'А' && c <= 'Я') || c == 'ё' || c == 'Ё';
         }
         private void ButtonReg(object sender, RoutedEventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(FIO.Text) ||
-                string.IsNullOrWhiteSpace(StudentsCardNumber.Text) ||
-                string.IsNullOrWhiteSpace(Course.Text) ||
-                string.IsNullOrWhiteSpace(Group.Text) ||
-                string.IsNullOrWhiteSpace(Email.Text) ||
-                string.IsNullOrWhiteSpace(login.Text) ||
-                string.IsNullOrWhiteSpace(password.Password) ||
-                string.IsNullOrWhiteSpace(passwordProverka.Password) ||
-                DateOfBirth.SelectedDate == null)
+            Reg(FIO.Text, DateOfBirth.SelectedDate, StudentsCardNumber.Text, Course.Text, Group.Text, Email.Text, login.Text, password.Password, passwordProverka.Password);
+        }
+        public bool Reg(String FIO, DateTime? DateOfBirth, String CardNumber, String Course, String Group, String email, String log, String pass, String passProverka)
+        {
+            if (string.IsNullOrWhiteSpace(FIO) ||
+                string.IsNullOrWhiteSpace(CardNumber) ||
+                string.IsNullOrWhiteSpace(Course) ||
+                string.IsNullOrWhiteSpace(Group) ||
+                string.IsNullOrWhiteSpace(email)||
+                string.IsNullOrWhiteSpace(log) ||
+                string.IsNullOrWhiteSpace(pass) ||
+                string.IsNullOrWhiteSpace(passProverka) ||
+                DateOfBirth == null)
             {
                 MessageBox.Show("Все обязательные поля должны быть заполнены", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
+                return false;
             }
-            String log = login.Text;
-            String pass = password.Password;
-            String email = Email.Text;
-            int studentCard = Convert.ToInt32(StudentsCardNumber.Text);
+            int studentCard = Convert.ToInt32(CardNumber);
             using (var db = new studEntities1())
             {
                 var user = db.Users.AsNoTracking().FirstOrDefault(u => u.Login == log);
                 if (user != null)
                 {
-                    MessageBox.Show("Пользователь с такими данными уже существует"); return;
+                    MessageBox.Show("Пользователь с такими данными уже существует"); 
+                    return false;
                 }
                 var emaildb = db.Students.AsNoTracking().FirstOrDefault(s => s.Email == email);
                 if (emaildb != null)
                 {
                     MessageBox.Show("Пользователь с таким email уже существует");
+                    return false;
                 }
                 var cardNumb = db.Students.AsNoTracking().FirstOrDefault(s => s.StudentCardNumber == studentCard);
                 if (cardNumb != null)
                 {
                     MessageBox.Show("Пользователь с таким номером студенческого билета уже существует");
+                    return false;
                 }
             }
-            StringBuilder errors = new StringBuilder();
-            if(log.Length > 50)
+            if (log.Length > 50)
             {
-                errors.AppendLine("Логин должен быть меньше 50 символов");
+                MessageBox.Show("Логин должен быть меньше 50 символов");
+                return false;
             }
             if (log.Length < 2)
             {
-                errors.AppendLine("Логин должен быть больше 1 символа");
+                MessageBox.Show("Логин должен быть больше 1 символа");
+                return false;
             }
             if (pass.Length < 8)
             {
-                errors.AppendLine("Пароль должен быть больше 8 символов");
+                MessageBox.Show("Пароль должен быть больше 8 символов");
+                return false;
             }
             if (pass.Length > 25)
             {
-                errors.AppendLine("Пароль должен быть меньше 25 символов");
+                MessageBox.Show("Пароль должен быть меньше 25 символов");
+                return false;
             }
             bool englishLetters = true;
             bool number = false;
-            for(int i = 0; i < pass.Length; i++)
+            for (int i = 0; i < pass.Length; i++)
             {
                 if (pass[i] >= 'А' && pass[i] <= 'Я') englishLetters = false;
                 if (pass[i] >= '0' && pass[i] <= '9') number = true;
             }
-            if (!englishLetters) errors.AppendLine("Пароль должен состоять из английских букв");
-            if (!number) errors.AppendLine("Пароль должен содержать хотя бы одну цифру");
-            if (pass != passwordProverka.Password) errors.AppendLine("Пароль должен совпадать с 'Подтверждение пароля'");
-            var nameParts = FIO.Text.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            if (!englishLetters)
+            {
+                MessageBox.Show("Пароль должен состоять из английских букв");
+                return false;
+            }
+            if (!number)
+            {
+                MessageBox.Show("Пароль должен содержать хотя бы одну цифру");
+                return false;
+            }
+            if (pass != passProverka)
+            {
+                MessageBox.Show("Пароль должен совпадать с 'Подтверждение пароля'");
+                return false;
+            }
+            var nameParts = FIO.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
             if (nameParts.Length < 2)
             {
-                errors.AppendLine("ФИО должно содержать минимум 2 слова");
+                MessageBox.Show("ФИО должно содержать минимум 2 слова");
+                return false;
             }
             foreach (var part in nameParts)
             {
                 if (!part.All(c => IsRussianLetter(c)))
                 {
-                    errors.AppendLine("ФИО должно состоять из русских букв");
-                    break;
+                    MessageBox.Show("ФИО должно состоять из русских букв");
+                    return false;
                 }
             }
-            if (DateOfBirth.SelectedDate >= DateTime.Today)
+            if (DateOfBirth >= DateTime.Today)
             {
-                errors.AppendLine("Дата рождения должна быть раньше текущей даты");
+                MessageBox.Show("Дата рождения должна быть раньше текущей даты");
+                return false;
             }
-            if (!Regex.IsMatch(StudentsCardNumber.Text, @"^\d{6}$"))
+            if (!Regex.IsMatch(CardNumber, @"^\d{6}$"))
             {
-                errors.AppendLine("Номер студенческого билета должен содержать ровно 6 цифр");
+                MessageBox.Show("Номер студенческого билета должен содержать ровно 6 цифр");
+                return false;
             }
-            if (!int.TryParse(Course.Text, out int course) || course < 1 || course > 4)
+            if (!int.TryParse(Course, out int course) || course < 1 || course > 4)
             {
-                errors.AppendLine("Курс должен быть числом от 1 до 4");
+                MessageBox.Show("Курс должен быть числом от 1 до 4");
+                return false;
             }
-            if (!Regex.IsMatch(Group.Text, @"^\d{3,4}$"))
+            if (!Regex.IsMatch(Group, @"^\d{3,4}$"))
             {
-                errors.AppendLine("Номер группы должен содержать 3 или 4 цифры");
+                MessageBox.Show("Номер группы должен содержать 3 или 4 цифры");
+                return false;
             }
-            if (!IsValidEmail(Email.Text))
+            if (!IsValidEmail(email))
             {
-                errors.AppendLine("Неверный формат email");
-            }
-            if (errors.Length > 0)
-            {
-                MessageBox.Show(errors.ToString(), "Ошибки в данных", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
+                MessageBox.Show("Неверный формат email");
+                return false;
             }
             try
             {
@@ -158,14 +174,14 @@ namespace Stud
                 {
                     var student = new Students
                     {
-                        FirstName = FIO.Text.Split(' ')[0],
-                        LastName = FIO.Text.Split(' ')[1],
-                        MiddleName = FIO.Text.Split(' ').Length > 2 ? FIO.Text.Split(' ')[2] : null,
-                        DateOfBirth = DateOfBirth.SelectedDate.Value,
-                        StudentCardNumber = int.Parse(StudentsCardNumber.Text),
-                        Course = int.Parse(Course.Text),
-                        Groupp = int.Parse(Group.Text),
-                        Email = Email.Text,
+                        FirstName = FIO.Split(' ')[0],
+                        LastName = FIO.Split(' ')[1],
+                        MiddleName = FIO.Split(' ').Length > 2 ? FIO.Split(' ')[2] : null,
+                        DateOfBirth = DateOfBirth.Value,
+                        StudentCardNumber = studentCard,
+                        Course = int.Parse(Course),
+                        Groupp = int.Parse(Group),
+                        Email = email,
                         JoinDate = DateTime.Today,
                         Points = 0
                     };
@@ -173,8 +189,8 @@ namespace Stud
                     db.SaveChanges();
                     var user = new Users
                     {
-                        Login = login.Text,
-                        Password = password.Password,
+                        Login = log,
+                        Password = pass,
                         Role = "student",
                         IDStudent = student.IDStudent
                     };
@@ -186,12 +202,15 @@ namespace Stud
                     MainWindow mainWindow = new MainWindow();
                     mainWindow.Show();
                     this.Close();
+                    return true;
                 }
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Ошибка при регистрации: {ex.Message}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
             }
         }
+
     }
 }
